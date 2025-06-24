@@ -144,12 +144,12 @@ const AddClientForm: React.FC<AddClientFormProps> = ({ isOpen, onClose, onClient
                 </div>
 
 
-                <div>
+                {/* <div>
                     <label htmlFor="client-logo" className="block text-sm font-medium text-slate-700">Logo Image</label>
                     <input id="client-logo" type="file" accept="image/*" onChange={handleFileChange} 
                            className="mt-1 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
                     {logoPreview && <img src={logoPreview} alt="Logo preview" className="mt-2 h-20 w-auto object-contain border rounded"/>}
-                </div>
+                </div> */}
 
                 <div className="pt-2">
                     <button type="submit" 
