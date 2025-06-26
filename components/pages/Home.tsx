@@ -14,6 +14,7 @@ import Parent from "./parent/Parent";
 import Teacher from "./teacher/Teacher";
 import DriverComponent from "./driver/DriverLocation";
 import Camera from "./Camera";
+import Libriary from "./libriary/Libriary";
 
 export default function Home({
   user,
@@ -185,7 +186,7 @@ export default function Home({
         {user.isParent && <div><Parent /></div>}
         {user.isTeacher && <div><Teacher /></div>}
         {user.isDriver && <div><DriverComponent /></div>}
-        {user.isLib && <div><Teacher /></div>}
+        {user.isLib && <div><Libriary /></div>}
         {user.isCam && <div><Camera /></div>}
       </div>
     );
