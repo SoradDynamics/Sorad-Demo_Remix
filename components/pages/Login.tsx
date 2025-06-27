@@ -43,8 +43,6 @@ export default function Login({
       await account.createEmailPasswordSession(username, password);
       const user = await account.get();
 
-      // 🔹 Extract user role from labels
-
       const isManage = user.labels?.includes("manage");
       const isPro = user.labels?.includes("pro");
       const isOne = user.labels?.includes("one");
