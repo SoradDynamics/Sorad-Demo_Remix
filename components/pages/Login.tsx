@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Input } from "@heroui/input";
-import { FaFacebook, FaLinkedin, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { Button, ButtonGroup } from "@heroui/button";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "components/icons";
 import { IoMdLogIn } from "react-icons/io";
-import { GoGlobe } from "react-icons/go";
+import { Globe, Facebook, Linkedin } from "lucide-react";
 import { toast, Toaster } from "react-hot-toast";
 import { account } from "~/utils/appwrite";
 import { Form } from "@remix-run/react";
@@ -48,7 +48,7 @@ export default function Login({
       const isManage = user.labels?.includes("manage");
       const isPro = user.labels?.includes("pro");
       const isOne = user.labels?.includes("one");
-      
+
       const isParent = user.labels?.includes("parent");
       const isStudent = user.labels?.includes("student");
       const isAdmin = user.labels?.includes("admin");
@@ -83,20 +83,33 @@ export default function Login({
     <div>
       <Toaster position="top-right" />
 
-      <div className="flex min-h-screen justify-center items-center bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100">
-        <div className="container relative bg-white/40 shadow-lg rounded-lg overflow-hidden md:flex md:w-[500px] mx-4 backdrop-blur-lg border border-white/50 max-w-[440px]">
-          {/* Left Section */}
-          <div className="w-full pt-8 px-3 text-center justify-center flex flex-col">
-            <div className="flex items-center mb-5 space-x-3 justify-center">
-              <img src="/ico.png" alt="Sorad Dynamics" width={32} height={32} />
-              <span className="text-gray-800 font-semibold text-2xl">
-                Sorad<span className="text-[#f76d37]">Dynamics</span>
-              </span>
+      <div className="h-screen overflow-auto md:bg-gradient-to-br md:from-slate-50 md:via-blue-50 md:to-indigo-100 flex items-center justify-center md:px-4 md:py-8 p-0">
+        <div className="md:w-full md:h-auto h-screen w-screen max-w-md md:bg-white/95 md:backdrop-blur-xl md:rounded-3xl md:shadow-2xl md:border md:border-white/30 overflow-hidden md:transition-all md:duration-300 hover:shadow-3xl md:transform scale-100 sm:scale-80 mt-40 md:m-0">
+          {/* Login Section */}
+          <div className="px-6 py-8 sm:px-8 sm:py-10">
+            {/* Brand Header */}
+            <div className="flex items-center justify-center mb-10">
+              <img
+                src="/ico.png"
+                alt="Sorad Dynamics"
+                className="w-12 h-12 mr-3 object-contain"
+              />
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+                Sorad<span className="text-orange-500">Dynamics</span>
+              </h1>
             </div>
-            <p className="text-xl font-medium mb-8 text-gray-600">
-              Login to Sorad Demo School
-            </p>
 
+            {/* Welcome Message */}
+            <div className="mb-10 grid-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight">
+                Welcome Back
+              </h2>
+              <p className="text-base text-gray-600 ml-2 font-small">
+                Please sign in to continue
+              </p>
+            </div>
+
+            {/* Login Form */}
             <Form
               method="post"
               onSubmit={(e) => {
@@ -110,98 +123,123 @@ export default function Login({
                 ).value;
                 handleLogin(username, password);
               }}
-              className="flex flex-col space-y-4"
+              className="space-y-8"
             >
-              <div className="flex flex-col items-center justify-center gap-5 px-4">
-                <Input
-                  className="max-w-xs"
-                  name="username"
-                  size="md"
-                  variant="underlined"
-                  type="email"
-                  isInvalid={isInvalid}
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter your user name"
-                  endContent={<FaUser className="text-gray-400" />}
-                  color="primary"
-                  required
-                />
-                <Input
-                  className="max-w-xs"
-                  name="password"
-                  variant="underlined"
-                  placeholder="Enter your password"
-                  type={isVisible ? "text" : "password"}
-                  minLength={8}
-                  endContent={
-                    <button
-                      aria-label="toggle password visibility"
-                      onClick={toggleVisibility}
-                      className="focus:outline-none"
-                      type="button"
-                    >
-                      {isVisible ? (
-                        <EyeSlashFilledIcon className="text-2xl text-default-400" />
-                      ) : (
-                        <EyeFilledIcon className="text-2xl text-default-400" />
-                      )}
-                    </button>
-                  }
-                  color="primary"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      // handleLogin(e);
+              <div className="space-y-6">
+                <div className="group">
+                  <Input
+                    className="w-full"
+                    name="username"
+                    size="lg"
+                    variant="bordered"
+                    type="email"
+                    isInvalid={isInvalid}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Enter your email address"
+                    endContent={
+                      <FaUser className="text-gray-500 text-base transition-colors group-focus-within:text-primary-500" />
                     }
-                  }}
-                  required
-                />
+                    color="primary"
+                    radius="lg"
+                    classNames={{
+                      input: "text-base font-medium placeholder:text-gray-400",
+                      inputWrapper:
+                        "border-2 border-gray-200 hover:border-gray-300 focus-within:!border-primary-500 h-14 bg-gray-50/50 transition-all duration-200",
+                    }}
+                    required
+                  />
+                </div>
+
+                <div className="group">
+                  <Input
+                    className="w-full"
+                    name="password"
+                    size="lg"
+                    variant="bordered"
+                    placeholder="Enter your password"
+                    type={isVisible ? "text" : "password"}
+                    minLength={8}
+                    endContent={
+                      <button
+                        aria-label="toggle password visibility"
+                        onClick={toggleVisibility}
+                        className="focus:outline-none text-gray-500 hover:text-gray-700 transition-colors duration-200 p-1"
+                        type="button"
+                      >
+                        {isVisible ? (
+                          <EyeSlashFilledIcon className="text-xl" />
+                        ) : (
+                          <EyeFilledIcon className="text-xl" />
+                        )}
+                      </button>
+                    }
+                    color="primary"
+                    radius="lg"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    classNames={{
+                      input: "text-base font-medium placeholder:text-gray-400",
+                      inputWrapper:
+                        "border-2 border-gray-200 hover:border-gray-300 focus-within:!border-primary-500 h-14 bg-gray-50/50 transition-all duration-200",
+                    }}
+                    required
+                  />
+                </div>
 
                 <Button
                   type="submit"
-                  className="text- text-lg px-6 pr-8 mt-3"
+                  className="w-full h-14 text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:transform-none bg-orange-500 hover:bg-orange-600"
                   color="primary"
-                  variant="ghost"
+                  variant="solid"
                   disabled={isLoggingIn}
                   isLoading={isLoading}
-                  startContent={
-                    !isLoading && <IoMdLogIn className="text-2xl" />
-                  }
+                  radius="lg"
+                  startContent={!isLoading && <IoMdLogIn className="text-xl" />}
                 >
-                  Login
+                  {isLoading ? "Signing in..." : "Sign In"}
                 </Button>
               </div>
             </Form>
 
-            <div className=" py-5 mb-3 mt-8  relative bg-gradient-to-r from-green-400 to-teal-500 flex items-center justify-center rounded-lg">
-              <div className="text-white text-center z-0">
-                {/* <p className="mt-4 text-lg">A comprehensive platform designed to simplify school management.</p> */}
-                <div className=" text-lg font-medium">Connect with us!</div>
-                <div className="flex space-x-2 mt-2 justify-center text-black/60">
+            {/* Social Connect Section */}
+            <div className="mt-10 pt-8 border-t border-gray-200">
+              <div className="">
+                <h3 className="ml-4 text-gray-700 font-bold text-lg mb-6 tracking-wide">
+                  Connect with us
+                </h3>
+                <div className="flex justify-center space-x-4">
                   {[
                     {
                       href: "https://soraddynamics.vercel.app/",
-                      icon: <GoGlobe size={24} />,
+                      icon: <Globe size={18} />,
+                      label: "Website",
+                      text: "Website",
                     },
                     {
                       href: "https://www.facebook.com/profile.php?id=61569291325991",
-                      icon: <FaFacebook size={24} />,
+                      icon: <Facebook size={18} />,
+                      label: "Facebook",
+                      text: "Facebook",
                     },
                     {
                       href: "https://www.linkedin.com/in/sorad-dynamics-a84087346/",
-                      icon: <FaLinkedin size={24} />,
+                      icon: <Linkedin size={18} />,
+                      label: "LinkedIn",
+                      text: "LinkedIn",
                     },
                   ].map((link, idx) => (
-                    <div
+                    <a
                       key={idx}
-                      className="rounded-full bg-white/55 p-2 w-10 h-10"
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center w-30 h-10 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-105 text-gray-700 hover:text-gray-900 shadow-sm hover:shadow-md font-medium text-sm"
+                      aria-label={link.label}
                     >
-                      <a href={link.href} target="_blank">
-                        {link.icon}
-                      </a>
-                    </div>
+                      <span className="mr-2">{link.icon}</span>
+                      {link.text}
+                    </a>
                   ))}
                 </div>
               </div>
