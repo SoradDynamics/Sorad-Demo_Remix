@@ -1,250 +1,218 @@
-import React, { useState } from "react";
+import React, { useState, useId } from "react";
 import { Input } from "@heroui/input";
 import { FaUser } from "react-icons/fa";
-import { Button, ButtonGroup } from "@heroui/button";
+import { Button } from "@heroui/button";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "components/icons";
 import { IoMdLogIn } from "react-icons/io";
 import { Globe, Facebook, Linkedin } from "lucide-react";
 import { toast, Toaster } from "react-hot-toast";
 import { account } from "~/utils/appwrite";
 import { Form } from "@remix-run/react";
+import { AppwriteException } from "appwrite";
+
+// --- Constants ---
+const socialLinks = [
+  {
+    href: "https://soraddynamics.com/",
+    icon: <Globe className="h-5 w-5" />,
+    label: "Website",
+  },
+  {
+    href: "https://www.facebook.com/profile.php?id=61569291325991",
+    icon: <Facebook className="h-5 w-5" />,
+    label: "Facebook",
+  },
+  {
+    href: "https://www.linkedin.com/in/sorad-dynamics-a84087346/",
+    icon: <Linkedin className="h-5 w-5" />,
+    label: "LinkedIn",
+  },
+];
+
+// --- Main Component ---
 export default function Login({
   setUser,
 }: {
   setUser: (user: object | null) => void;
 }) {
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
-  const [username, setUsername] = useState("");
+  // --- State Management ---
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Add isLoading state
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  
+  // --- Hooks for unique IDs for accessibility ---
+  const emailId = useId();
+  const passwordId = useId();
 
-  //validate email
-  const validateEmail = (username: string) =>
-    username.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
+  // --- Utility Functions ---
+  const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
 
-  const isInvalid = React.useMemo(() => {
-    if (username === "") return false;
-
-    return validateEmail(username) ? false : true;
-  }, [username]);
-
-  const handleLogin = async (username: string, password: string) => {
-    // e.preventDefault();
-    setIsLoggingIn(true);
-
-    setIsLoading(true); // Set loading to true before the request
+  // --- Event Handlers ---
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
 
     try {
-      await account.createEmailPasswordSession(username, password);
+      await account.createEmailPasswordSession(email, password);
       const user = await account.get();
-
-      const isManage = user.labels?.includes("manage");
-      const isPro = user.labels?.includes("pro");
-      const isOne = user.labels?.includes("one");
-
-      const isParent = user.labels?.includes("parent");
-      const isStudent = user.labels?.includes("student");
-      const isAdmin = user.labels?.includes("admin");
-      const isTeacher = user.labels?.includes("teacher");
-      const isDriver = user.labels?.includes("driver");
-      const isCam = user.labels?.includes("camera");
-      const isLib = user.labels?.includes("library");
-
-      setUser({
-        ...user,
-        isParent,
-        isStudent,
-        isAdmin,
-        isTeacher,
-        isDriver,
-        isCam,
-        isLib,
-        isPro,
-        isManage,
-        isOne,
-      }); // Store role in state
-
-      toast.success("Login successful!"); // ✅ Now it only shows when logging in
-    } catch (error: any) {
-      toast.error(error.message || "Login failed!");
+      const roles = {
+        isParent: user.labels.includes("parent"),
+        isStudent: user.labels.includes("student"),
+        isAdmin: user.labels.includes("admin"),
+        isTeacher: user.labels.includes("teacher"),
+        isDriver: user.labels.includes("driver"),
+        isCam: user.labels.includes("camera"),
+        isLib: user.labels.includes("library"),
+        isPro: user.labels.includes("pro"),
+        isManage: user.labels.includes("manage"),
+        isOne: user.labels.includes("one"),
+      };
+      setUser({ ...user, ...roles });
+      toast.success("Login successful! Redirecting...");
+    } catch (error) {
+      if (error instanceof AppwriteException) {
+        toast.error(error.message || "Login failed. Please check your credentials.");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
-      setIsLoggingIn(false);
-      setIsLoading(false); // Set loading to false after the request
+      setIsLoading(false);
     }
   };
-  return (
-    <div>
-      <Toaster position="top-right" />
 
-      <div className="h-screen overflow-auto sm:bg-gradient-to-br sm:from-slate-50 sm:via-blue-50 sm:to-indigo-100 flex items-center justify-center sm:px-4 sm:py-8 p-0">
-        <div className="sm:w-full sm:h-auto h-screen w-screen max-w-sm sm:bg-white/95 sm:backdrop-blur-xl sm:rounded-3xl sm:shadow-2xl sm:border sm:border-white/30 overflow-hidden sm:transition-all sm:duration-300 hover:shadow-3xl sm:transform scale-100 sm:scale-80 mt-40 sm:m-0">
-          {/* Login Section */}
-          <div className="px-6 py-8 sm:px-8 sm:py-10">
-            {/* Brand Header */}
-            <div className="flex items-center justify-center mb-10">
+  // --- Common Input Styles ---
+  const inputStyles = {
+    inputWrapper: "h-12 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 transition-colors hover:border-orange-500 dark:hover:border-orange-400 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/20 dark:focus-within:ring-orange-500/40",
+    input: "text-base placeholder:text-gray-500 dark:placeholder:text-gray-400",
+  };
+
+  return (
+    <>
+      <Toaster position="top-right" toastOptions={{
+        className: 'dark:bg-gray-700 dark:text-white',
+      }} />
+
+      {/* 
+        This is the main container.
+        On mobile (default), it's a white screen with padding.
+        On desktop (md:), it becomes a gray background to make the card stand out.
+      */}
+      <div className="flex min-h-screen w-full items-center justify-center bg-white p-6 dark:bg-gray-900 md:bg-gray-100 md:p-4 md:dark:bg-gray-950">
+        
+        {/*
+          This is the content block.
+          On mobile (default), it's transparent and has no special styling.
+          On desktop (md:), it "becomes" a card with a background, shadow, and rounded corners.
+        */}
+        <div className="w-full max-w-md space-y-10 md:rounded-2xl md:bg-white md:p-8 md:shadow-xl md:dark:bg-gray-800">
+          
+          <header className="text-center">
+            <div className="mb-4 inline-flex items-center">
               <img
                 src="/ico.png"
-                alt="Sorad Dynamics"
-                className="w-12 h-12 mr-3 object-contain"
+                alt="Sorad Dynamics Logo"
+                className="mr-3 h-10 w-10 object-contain"
               />
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Sorad<span className="text-orange-500">Dynamics</span>
               </h1>
             </div>
+            <h2 className="text-xl text-gray-600 dark:text-gray-300">
+              Welcome Back
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Please sign in to continue
+            </p>
+          </header>
 
-            {/* Welcome Message */}
-            <div className="mb-10 grid-1">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight">
-                Welcome Back
-              </h2>
-              <p className="text-base text-gray-600 ml-2 font-small">
-                Please sign in to continue
-              </p>
-            </div>
-
-            {/* Login Form */}
-            <Form
-              method="post"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const form = e.currentTarget;
-                const username = (
-                  form.elements.namedItem("username") as HTMLInputElement
-                ).value;
-                const password = (
-                  form.elements.namedItem("password") as HTMLInputElement
-                ).value;
-                handleLogin(username, password);
-              }}
-              className="space-y-8"
-            >
-              <div className="space-y-6">
-                <div className="group">
-                  <Input
-                    className="w-full"
-                    name="username"
-                    size="lg"
-                    variant="bordered"
-                    type="email"
-                    isInvalid={isInvalid}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter your email address"
-                    endContent={
-                      <FaUser className="text-gray-500 text-base transition-colors group-focus-within:text-primary-500" />
-                    }
-                    color="primary"
-                    radius="lg"
-                    classNames={{
-                      input: "text-base font-medium placeholder:text-gray-500",
-                      inputWrapper:
-                        "border-2 border-gray-200 hover:border-gray-300 focus-within:!border-primary-500 h-14 bg-gray-50/50 transition-all duration-200",
-                    }}
-                    required
-                  />
-                </div>
-
-                <div className="group">
-                  <Input
-                    className="w-full"
-                    name="password"
-                    size="lg"
-                    variant="bordered"
-                    placeholder="Enter your password"
-                    type={isVisible ? "text" : "password"}
-                    minLength={8}
-                    endContent={
-                      <button
-                        aria-label="toggle password visibility"
-                        onClick={toggleVisibility}
-                        className="focus:outline-none text-gray-500 hover:text-gray-700 transition-colors duration-200 p-1"
-                        type="button"
-                      >
-                        {isVisible ? (
-                          <EyeSlashFilledIcon className="text-xl" />
-                        ) : (
-                          <EyeFilledIcon className="text-xl" />
-                        )}
-                      </button>
-                    }
-                    color="primary"
-                    radius="lg"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    classNames={{
-                      input: "text-base font-medium placeholder:text-gray-500",
-                      inputWrapper:
-                        "border-2 border-gray-200 hover:border-gray-300 focus-within:!border-primary-500 h-14 bg-gray-50/50 transition-all duration-200",
-                    }}
-                    required
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full h-14 text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:transform-none bg-orange-500 hover:bg-orange-600"
-                  color="primary"
-                  variant="solid"
-                  disabled={isLoggingIn}
-                  isLoading={isLoading}
-                  radius="lg"
-                  startContent={!isLoading && <IoMdLogIn className="text-xl" />}
-                >
-                  {isLoading ? "Signing in..." : "Sign In"}
-                </Button>
+          <main>
+            <Form method="post" onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label htmlFor={emailId} className="sr-only">
+                  Email Address
+                </label>
+                <Input
+                  id={emailId}
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  endContent={<FaUser className="pointer-events-none text-xl text-gray-400" />}
+                  classNames={inputStyles}
+                />
               </div>
-            </Form>
 
-            {/* Social Connect Section */}
-            <div className="mt-10 pt-8 border-t border-gray-200">
-              <div className="">
-                <h3 className="ml-4 text-gray-700 font-bold text-lg mb-6 tracking-wide">
-                  Connect with us
-                </h3>
-                <div className="flex justify-center space-x-4">
-                  {[
-                    {
-                      href: "https://soraddynamics.com/",
-                      icon: <Globe size={18} />,
-                      label: "Website",
-                      text: "Website",
-                    },
-                    {
-                      href: "https://www.facebook.com/profile.php?id=61569291325991",
-                      icon: <Facebook size={18} />,
-                      label: "Facebook",
-                      text: "Facebook",
-                    },
-                    {
-                      href: "https://www.linkedin.com/in/sorad-dynamics-a84087346/",
-                      icon: <Linkedin size={18} />,
-                      label: "LinkedIn",
-                      text: "LinkedIn",
-                    },
-                  ].map((link, idx) => (
-                    <a
-                      key={idx}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center w-30 h-10 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-105 text-gray-700 hover:text-gray-900 shadow-sm hover:shadow-md font-medium text-sm"
-                      aria-label={link.label}
+              <div>
+                <label htmlFor={passwordId} className="sr-only">
+                  Password
+                </label>
+                <Input
+                  id={passwordId}
+                  name="password"
+                  placeholder="Enter your password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  autoComplete="current-password"
+                  required
+                  minLength={8}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  endContent={
+                    <button
+                      aria-label="toggle password visibility"
+                      onClick={togglePasswordVisibility}
+                      className="focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-md"
+                      type="button"
                     >
-                      <span className="mr-2">{link.icon}</span>
-                      {link.text}
-                    </a>
-                  ))}
-                </div>
+                      {isPasswordVisible ? (
+                        <EyeSlashFilledIcon className="text-xl text-gray-400" />
+                      ) : (
+                        <EyeFilledIcon className="text-xl text-gray-400" />
+                      )}
+                    </button>
+                  }
+                  classNames={inputStyles}
+                />
               </div>
+              
+              <Button
+                type="submit"
+                color="primary"
+                variant="solid"
+                disabled={isLoading}
+                isLoading={isLoading}
+                className="h-12 w-full bg-orange-500 text-base font-bold text-white shadow-md transition-all hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 dark:focus:ring-offset-gray-800"
+                startContent={!isLoading && <IoMdLogIn className="text-xl" />}
+              >
+                {isLoading ? "Signing In..." : "Sign In"}
+              </Button>
+            </Form>
+          </main>
+
+          <footer className="pt-6 border-t border-gray-200 dark:border-gray-600">
+            <p className="mb-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
+              Connect with us
+            </p>
+            <div className="flex justify-center space-x-4">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  {link.icon}
+                </a>
+              ))}
             </div>
-          </div>
+          </footer>
         </div>
       </div>
-    </div>
+    </>
   );
 }
