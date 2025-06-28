@@ -113,4 +113,12 @@ export const searchItems: SearchItem[] = [
     location: "Menu",
     generalMenuLocation: "Result",
   },
+  {
+    id: "113",
+    icon: CalendarIcon,
+    title: "Calendar",
+    description: "View calendar of school events",
+    location: "Menu",
+    generalMenuLocation: "Calendar",
+  },
 ];

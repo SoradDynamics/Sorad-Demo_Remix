@@ -11,6 +11,7 @@ import { BookOpenCheck, Images, LucideAlignVerticalJustifyCenter, NotebookTabs }
 import { MdOutlineAssignment, MdOutlinePlayLesson, MdOutlineRateReview, MdOutlineSchedule } from 'react-icons/md';
 import { PiExam } from 'react-icons/pi';
 
+import Calender from "../common/Calendaar/Calendar";
 import ParentExamViewPage from "./components/Exam";
 import ParentAttendancePage from "./components/Attendance/ParentAttendancePage";
 import ViewStudentRoutinePage from "./components/Routine/ViewStudentRoutinePage";
@@ -72,6 +73,7 @@ const GeneralComponent: React.FC<GeneralComponentProps> = ({ initialMenuItem }) 
               { name: "Attendance", icon: <AdjustmentsHorizontalIcon className="h-5 w-5" />, component: ParentAttendancePage, onClick: () => {} },
               { name: "Leave Validation", icon: <LucideAlignVerticalJustifyCenter className="h-5 w-5" />, component: Leave, onClick: () => {} },
               { name: "Bus Location", icon: <BusIcon className="h-5 w-5" />, component: MapComponent, onClick: () => {} },
+              { name: 'Calendar', icon: <CalendarIcon className="h-5 w-5" />, component: Calender, onClick: () => {} },
               { name: "Routine", icon: <MdOutlineSchedule className="h-5 w-5" />, component: ViewStudentRoutinePage, onClick: () => {} },
               { name: "Notes", icon: <NotebookTabs className="h-5 w-5" />, component: ParentNotesPage, onClick: () => {} },
               { name: "Assignment", icon: <MdOutlineAssignment className="h-5 w-5" />, component: ParentAssignmentsPage, onClick: () => {} },

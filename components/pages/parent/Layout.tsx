@@ -13,6 +13,8 @@ import ParentDashboardPage from "./components/Dashboard";
 import Leave from "./components/Leave/Leave";
 import { icon } from "leaflet";
 import ParentExamViewPage from "./components/Exam";
+import Calender from "../common/Calendaar/Calendar";
+
 import ParentAttendancePage from "./components/Attendance/ParentAttendancePage";
 import ViewStudentRoutinePage from "./components/Routine/ViewStudentRoutinePage";
 import ParentNotesPage from "./components/Notes/ParentNotesPage";
@@ -21,9 +23,9 @@ import ParentLessonPlansPage from "./components/Lesson/ParentLessonPlansPage";
 import ParentStudentReviewsPage from "./components/Review/ParentStudentReviewsPage";
 import ParentAssignmentsPage from "./components/Assignment/ParentAssignmentsPage";
 import ParentResultsPage from "./components/Result/ParentResultsPage";
-import { BookOpenCheck, Images, LucideAlignVerticalJustifyCenter, NotebookTabs } from "lucide-react";
+import { BookOpenCheck, Calendar, Images, LucideAlignVerticalJustifyCenter, NotebookTabs } from "lucide-react";
 import { MdOutlineAssignment, MdOutlinePlayLesson, MdOutlineRateReview, MdOutlineSchedule } from "react-icons/md";
-import { BusIcon } from "components/icons";
+import { BusIcon, CalendarIcon } from "components/icons";
 import MapComponent from "../common/MapComponent";
 import { PiExam } from "react-icons/pi";
 
@@ -72,6 +74,7 @@ export default function Layout() {
     { name: "Attendance", icon: AdjustmentsHorizontalIcon, component:ParentAttendancePage },
     { name: "Leave Validation", icon: LucideAlignVerticalJustifyCenter, component:Leave },
     { name: "Bus Location", icon: BusIcon, component: MapComponent },
+    { name: "Calendar", icon: CalendarIcon, component: Calender},
     { name: "Routine", icon: MdOutlineSchedule, component:ViewStudentRoutinePage },
     { name: "Notes", icon: NotebookTabs, component:ParentNotesPage },
     { name: "Assignment", icon: MdOutlineAssignment, component:ParentAssignmentsPage },

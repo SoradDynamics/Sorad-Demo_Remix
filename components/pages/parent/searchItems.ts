@@ -98,5 +98,13 @@ export const searchItems: SearchItem[] = [
     description: "View academic results and report cards",
     location: "Result",
   },
+  {
+    id: "13",
+    icon: CalendarIcon,
+    title: "Calendar",
+    description: "View calendar of school events",
+    location: "Calendar",
+  }
 ];
+
 
