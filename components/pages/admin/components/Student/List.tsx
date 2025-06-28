@@ -360,13 +360,40 @@ const List: React.FC<ListProps> = ({
       //   // domain: 
       // };
 
-      const signupPayload = {
-        isExistingParent: isExistingParentCheckboxChecked,
-        studentName: newStudentName,
-        parentName: parentDetailsForBackend?.name,
-        parentEmail: parentDetailsForBackend?.email,
-        domain: schoolDomain, // <-- ADD THIS LINE
-      };
+      let signupPayload;
+
+      if (isExistingParentCheckboxChecked) {
+        // Find the selected parent from the store to get their email and name.
+        const selectedParent = parentData.find(
+          (p) => p.$id === selectedExistingParentId
+        );
+
+        if (!selectedParent) {
+          // This should ideally not happen due to validation above, but it's a safe fallback.
+          throw new Error("Could not find the selected parent's details. Please re-select.");
+        }
+
+        // Construct payload for an EXISTING parent, including the email as required by the backend.
+        signupPayload = {
+          isExistingParent: true,
+          studentName: newStudentName,
+          parentEmail: selectedParent.email, // <-- THE CRUCIAL FIX
+          parentName: selectedParent.name,   // <-- Also sending name to help the backend
+          domain: schoolDomain,
+        };
+      } else {
+        // Construct payload for a NEW parent (this logic was already correct).
+        signupPayload = {
+          isExistingParent: false,
+          studentName: newStudentName,
+          parentName: newParentName,
+
+          parentEmail: newParentEmail,
+          domain: schoolDomain,
+        };
+      }
+
+      
 
 
       const response = await fetch(`${SERVER_URL}/api/users/signup`, {
