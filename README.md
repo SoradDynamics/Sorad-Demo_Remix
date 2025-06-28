@@ -1,46 +1,185 @@
-# Remix & HeroUI Template
+https://github.com/SoradDynamics/Sorad-Demo_Remix# SORAD - School Management System
 
-This is a template for creating applications using Next.js 14 (app directory) and HeroUI (v2).
+![SORAD Logo](/public/ico.png)
 
-## Technologies Used
+## 🌟 Overview
 
-- [Remix 2](https://remix.run/docs/en/main/start/quickstart)
-- [HeroUI v2](https://heroui.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
+SORAD is a comprehensive school management system built with modern web technologies. It's designed to streamline educational administration by providing an integrated platform for administrators, teachers, students, parents, and other school staff.
 
-## How to Use
+The platform offers specialized interfaces for each user role:
 
-### Use the template with create-remix
+- **Administrators**: Manage school operations, classes, and staff
+- **Teachers**: Handle attendance, assignments, lesson plans, and student reviews
+- **Students**: Access learning materials, assignments, and view their performance
+- **Parents**: Monitor their children's progress, view lesson plans, and interact with teachers
+- **Library Staff**: Manage library resources
+- **Drivers**: Handle transportation logistics
 
-To create a new project based on this template using `create-remix`, run the following command:
+## 🚀 Key Features
+
+- **Multi-Role Access**: Tailored interfaces for administrators, teachers, students, parents, drivers, library staff, and camera operators
+- **School Administration**: Manage student enrollment, class assignments, and staff management
+- **Academic Management**: Create and track lesson plans, assignments, and student reviews
+- **Attendance Tracking**: Record and monitor student and teacher attendance
+- **Learning Resources**: Share notes, lesson materials, and create a digital repository
+- **Gallery Management**: Upload and organize photos and media content
+- **Library Management**: Track books and resources
+- **Transportation**: Monitor driver locations and manage transport logistics
+- **License Management**: School licensing system with expiration tracking
+- **Responsive Design**: Works seamlessly across desktop and mobile devices
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+- [Remix 2](https://remix.run/docs/en/main/start/quickstart): Modern React framework
+- [HeroUI v2](https://heroui.com/): UI component library
+- [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework
+- [Tailwind Variants](https://tailwind-variants.org): Variant API for Tailwind
+- [TypeScript](https://www.typescriptlang.org/): Type-safe JavaScript
+- [Framer Motion](https://www.framer.com/motion/): Animation library
+- [React](https://react.dev/): JavaScript UI library
+- [Zustand](https://github.com/pmndrs/zustand): State management solution
+
+### Backend & Services
+
+- [Appwrite](https://appwrite.io/): Backend-as-a-Service platform
+  - Authentication
+  - Database
+  - Storage
+  - Functions
+- [Tauri](https://tauri.app/): Framework for building desktop applications
+- [Leaflet](https://leafletjs.com/): Interactive maps
+
+### Data Visualization
+
+- [Chart.js](https://www.chartjs.org/): JavaScript charting library
+- [Recharts](https://recharts.org/): Composable charting library
+
+### Form Handling
+
+- [React Hook Form](https://react-hook-form.com/): Form validation
+- [Zod](https://zod.dev/): TypeScript-first schema validation
+
+## 🏗️ Project Structure
+
+- `app/`: Core application files
+  - `routes/`: Application routes
+  - `context/`: React context providers
+  - `store/`: Zustand state stores
+  - `utils/`: Utility functions and services
+  - `hooks/`: Custom React hooks
+- `components/`: UI components
+  - `common/`: Shared components
+  - `pages/`: Page-specific components
+- `public/`: Static assets
+- `types/`: TypeScript type definitions
+
+## 📋 Prerequisites
+
+- Node.js 20.0.0 or higher
+- pnpm 9.12.3 or higher (recommended)
+
+## 🚦 Getting Started
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-npx create-next-app -e https://github.com/frontio-ai/remix-template.git
+git clone [repository-url]
+cd sorad-demo-school
 ```
 
-### Install dependencies
-
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+2. Install dependencies using pnpm:
 
 ```bash
-npm install
+pnpm install
 ```
 
-### Run the development server
+3. Configure environment variables:
+   Create a `.env` file in the root directory with the following variables:
 
-```bash
-npm run dev
+```
+VITE_APPWRITE_ENDPOINT=your_appwrite_endpoint
+VITE_APPWRITE_PROJECT_ID=your_appwrite_project_id
 ```
 
-### Setup pnpm (optional)
+### Development
 
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+Run the development server:
 
 ```bash
+pnpm dev
+```
+
+### Build for Production
+
+Build the project:
+
+```bash
+pnpm build
+```
+
+Serve the built application:
+
+```bash
+pnpm start
+```
+
+## 🧪 Type Checking
+
+Run TypeScript type checking:
+
+```bash
+pnpm typecheck
+```
+
+## 🔍 Linting
+
+Lint the project:
+
+```bash
+pnpm lint
+```
+
+## 📦 PNPM Configuration
+
+If you're using pnpm, add the following to your `.npmrc` file:
+
+```
 public-hoist-pattern[]=*@heroui/*
 ```
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
+After modifying the `.npmrc` file, run `pnpm install` again to ensure dependencies are installed correctly.
+
+## 🔑 Authentication
+
+The system uses Appwrite's authentication service. Users are assigned role-based access through labels:
+
+- `admin`: School administrators
+- `teacher`: Teaching staff
+- `student`: Students
+- `parent`: Parents or guardians
+- `driver`: Transportation staff
+- `library`: Library staff
+- `camera`: Camera operators
+- `manage`: System managers
+
+## 🌐 License Management
+
+Schools are managed through a licensing system that tracks validity and expiration. The system can display appropriate messages for expired licenses.
+
+## 📱 Responsive Design
+
+The application is designed to work on both desktop and mobile devices, with appropriate layouts for different screen sizes.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome. Feel free to check issues page if you want to contribute.
+
+## 📄 License
+
+This project is proprietary software. All rights reserved.
+
+© 2025 SORAD Tech
