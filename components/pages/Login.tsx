@@ -81,8 +81,8 @@ export default function Login({
     <div>
       <Toaster position="top-right" />
 
-      <div className="h-screen overflow-auto md:bg-gradient-to-br md:from-slate-50 md:via-blue-50 md:to-indigo-100 flex items-center justify-center md:px-4 md:py-8 p-0">
-        <div className="md:w-full md:h-auto h-screen w-screen max-w-md md:bg-white/95 md:backdrop-blur-xl md:rounded-3xl md:shadow-2xl md:border md:border-white/30 overflow-hidden md:transition-all md:duration-300 hover:shadow-3xl md:transform scale-100 sm:scale-80 mt-40 md:m-0">
+      <div className="h-screen overflow-auto sm:bg-gradient-to-br sm:from-slate-50 sm:via-blue-50 sm:to-indigo-100 flex items-center justify-center sm:px-4 sm:py-8 p-0">
+        <div className="sm:w-full sm:h-auto h-screen w-screen max-w-sm sm:bg-white/95 sm:backdrop-blur-xl sm:rounded-3xl sm:shadow-2xl sm:border sm:border-white/30 overflow-hidden sm:transition-all sm:duration-300 hover:shadow-3xl sm:transform scale-100 sm:scale-80 mt-40 sm:m-0">
           {/* Login Section */}
           <div className="px-6 py-8 sm:px-8 sm:py-10">
             {/* Brand Header */}
@@ -141,7 +141,7 @@ export default function Login({
                     color="primary"
                     radius="lg"
                     classNames={{
-                      input: "text-base font-medium placeholder:text-gray-400",
+                      input: "text-base font-medium placeholder:text-gray-500",
                       inputWrapper:
                         "border-2 border-gray-200 hover:border-gray-300 focus-within:!border-primary-500 h-14 bg-gray-50/50 transition-all duration-200",
                     }}
@@ -177,7 +177,7 @@ export default function Login({
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     classNames={{
-                      input: "text-base font-medium placeholder:text-gray-400",
+                      input: "text-base font-medium placeholder:text-gray-500",
                       inputWrapper:
                         "border-2 border-gray-200 hover:border-gray-300 focus-within:!border-primary-500 h-14 bg-gray-50/50 transition-all duration-200",
                     }}
@@ -209,7 +209,7 @@ export default function Login({
                 <div className="flex justify-center space-x-4">
                   {[
                     {
-                      href: "https://soraddynamics.vercel.app/",
+                      href: "https://soraddynamics.com/",
                       icon: <Globe size={18} />,
                       label: "Website",
                       text: "Website",
