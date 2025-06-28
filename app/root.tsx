@@ -44,8 +44,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-  <SchoolProvider>
-  <Outlet />
-  </SchoolProvider>
+    <SchoolProvider>
+      <Outlet />
+    </SchoolProvider>
   );
 }
